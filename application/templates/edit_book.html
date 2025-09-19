@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Редактиране на книга - {{ book.title }}{% endblock %}
+
+{% block content %}
+<h1><i class="bi bi-pencil-square"></i> Редактиране на книга</h1>
+<hr>
+
+<form action="{{ url_for('books.edit_book_page', tom_no=book.tom_no) }}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="back_url" value="{{ request.args.get('back_url', '') }}">
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6 mb-3"><label for="inv_number" class="form-label">Инв. номер</label><input type="text" class="form-control" id="inv_number" name="inv_number" value="{{ book.tom_no }}" readonly disabled></div>
+                <div class="col-md-6 mb-3"><label for="isbn" class="form-label">ISBN</label><input type="text" class="form-control" id="isbn" name="isbn" value="{{ book.isbn or '' }}"></div>
+            </div>
+            <div class="mb-3"><label for="title" class="form-label">Заглавие</label><input type="text" class="form-control" id="title" name="title" value="{{ book.title }}" required></div>
+            <div class="mb-3"><label for="author" class="form-label">Автор</label><input type="text" class="form-control" id="author" name="author" value="{{ book.author }}" required></div>
+             <div class="row">
+                <div class="col-md-6 mb-3"><label for="genre_select" class="form-label">Жанр</label><select class="form-select" id="genre_select" name="genre_select"><option value="">-- Избери --</option>{% for genre in genres %}<option value="{{ genre.name }}" {% if genre.name == book.genre %}selected{% endif %}>{{ genre.name }}</option>{% endfor %}</select></div>
+                <div class="col-md-6 mb-3"><label for="new_genre" class="form-label">или добави нов</label><input type="text" class="form-control" id="new_genre" name="new_genre"></div>
+            </div>
+             <div class="row">
+                <div class="col-md-6 mb-3"><label for="publish_year" class="form-label">Година</label><input type="number" class="form-control" id="publish_year" name="publish_year" value="{{ book.publish_year or '' }}"></div>
+                <div class="col-md-6 mb-3"><label for="price" class="form-label">Цена (лв.)</label><input type="text" class="form-control" id="price" name="price" value="{{ book.price or '' }}" pattern="[0-9]+([,\.][0-9]{1,2})?"></div>
+            </div>
+             <div class="mb-3"><div class="form-check"><input class="form-check-input" type="checkbox" id="is_donation" name="is_donation" value="1" {% if book.is_donation %}checked{% endif %}><label class="form-check-label" for="is_donation">Дарение</label></div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="mb-3">
+                <label for="cover_image" class="form-label">Корица</label>
+                {% if book.cover_image %}<img src="{{ url_for('books.serve_cover', filename=book.cover_image) }}" class="img-fluid rounded mb-2" alt="Текуща корица"><p class="form-text">Качете нов файл, за да смените.</p><input type="hidden" name="current_cover" value="{{ book.cover_image }}">{% endif %}
+                <input class="form-control" type="file" id="cover_image" name="cover_image" accept="image/*">
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <a href="{{ request.args.get('back_url') or url_for('books.book_details_page', tom_no=book.tom_no) }}" class="btn btn-secondary">Отказ</a>
+    <button type="submit" class="btn btn-primary">Запази промените</button>
+</form>
+
+{% endblock %}

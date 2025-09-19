@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a href="{{ url_for('reports.reports_page') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Обратно към Справки</a>
+        <h1 class="d-inline-block ms-3">{{ title }}</h1>
+    </div>
+    <div>
+        <a href="{{ url_for('reports.export_report_new_books', year=year, start_date=start_date, end_date=end_date) }}" class="btn btn-success">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Експорт в CSV
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Общо нови книги</h5>
+                <p class="card-text display-6">{{ total_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Закупени</h5>
+                <p class="card-text display-6">{{ purchased_count }}</p>
+                <p class="card-text">Стойност: {{ "%.2f лв."|format(purchased_value) }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Дарения</h5>
+                <p class="card-text display-6">{{ donated_count }}</p>
+                 <p class="card-text">Стойност: {{ "%.2f лв."|format(donated_value) }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center h-100 bg-light">
+             <div class="card-body">
+                <h5 class="card-title">Обща стойност</h5>
+                <p class="card-text display-6">{{ "%.2f лв."|format(purchased_value + donated_value) }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Детайлен списък</h5>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Инв. №</th>
+                        <th>Заглавие</th>
+                        <th>Автор</th>
+                        <th>Тип</th>
+                        <th>Цена</th>
+                        <th>Дата на запис</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in results %}
+                    <tr>
+                        <td>{{ book.tom_no }}</td>
+                        <td>{{ book.title }}</td>
+                        <td>{{ book.author }}</td>
+                        <td>{% if book.is_donation %}Дарение{% else %}Покупка{% endif %}</td>
+                        <td>{{ "%.2f лв."|format(book.price) if book.price is not none else '---' }}</td>
+                        <td>{{ book.record_date|dmy }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Няма намерени книги за избрания период.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Импортиране на книги{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('books.books_list_page') }}" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Обратно към списъка с книги</a>
+
+<h1><i class="bi bi-upload"></i> Импортиране на книги от CSV файл</h1>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Инструкции</h5>
+        <p>Моля, качете CSV файл, който съдържа следните колони в този ред:</p>
+        <code>tom_no, isbn, author, title, genre, publish_year, record_date, price</code>
+        <ul>
+            <li>Първият ред на файла трябва да бъде заглавен (header row) и ще бъде пропуснат при импорта.</li>
+            <li>Колоните <strong>tom_no</strong> (инвентарен номер) и <strong>title</strong> (заглавие) са задължителни.</li>
+            <li>Ако книга със същия инвентарен номер вече съществува, редът ще бъде пропуснат.</li>
+            <li>Кодировката на файла трябва да е UTF-8 или Windows-1251.</li>
+        </ul>
+        <hr>
+        <form action="{{ url_for('books.import_books_page') }}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="csv_file" class="form-label">Изберете CSV файл</label>
+                <input class="form-control" type="file" id="csv_file" name="csv_file" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Импортирай</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

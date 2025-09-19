@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Вътрешна грешка в сървъра{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="display-1 fw-bold text-danger">500</h1>
+            <h2 class="mb-4">Възникна вътрешна грешка</h2>
+            <p class="lead mb-4">
+                Съжаляваме, но нещо се обърка от наша страна. Нашият екип е уведомен и работи по отстраняването на проблема.
+            </p>
+            <a href="{{ url_for('main.index') }}" class="btn btn-primary btn-lg">
+                 <i class="bi bi-house-door-fill"></i> Към началната страница
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

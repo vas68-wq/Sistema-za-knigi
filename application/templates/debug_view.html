@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Диагностика на База Данни</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 40px; }
+        th, td { border: 1px solid #ccc; padding: 5px; text-align: left; }
+        th { background-color: #f0f0f0; }
+        .highlight { background-color: yellow; }
+    </style>
+</head>
+<body>
+    <h1>Сурови Данни от Базата</h1>
+    <a href="/">&larr; Обратно към таблото</a>
+
+    <h2>Таблица: Книги (books)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>tom_no</th>
+                <th>isbn</th>
+                <th>author</th>
+                <th>title</th>
+                <th>genre</th>
+                <th>publish_year</th>
+                <th class="highlight">record_date</th>
+                <th>price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book['tom_no'] }}</td>
+                <td>{{ book['isbn'] }}</td>
+                <td>{{ book['author'] }}</td>
+                <td>{{ book['title'] }}</td>
+                <td>{{ book['genre'] }}</td>
+                <td>{{ book['publish_year'] }}</td>
+                <td class="highlight">{{ book['record_date'] }}</td>
+                <td>{{ book['price'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Таблица: Читатели (readers)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>reader_no</th>
+                <th>full_name</th>
+                <th>city</th>
+                <th>profession</th>
+                <th>education</th>
+                <th class="highlight">registration_date</th>
+                <th>is_under_14</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reader in readers %}
+            <tr>
+                <td>{{ reader['reader_no'] }}</td>
+                <td>{{ reader['full_name'] }}</td>
+                <td>{{ reader['city'] }}</td>
+                <td>{{ reader['profession'] }}</td>
+                <td>{{ reader['education'] }}</td>
+                <td class="highlight">{{ reader['registration_date'] }}</td>
+                <td>{{ reader['is_under_14'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

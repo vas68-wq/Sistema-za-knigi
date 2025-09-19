@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a href="{{ url_for('reports.reports_page') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Обратно към Справки</a>
+        <h1 class="d-inline-block ms-3">{{ title }}</h1>
+    </div>
+    <div>
+        {# This creates a dynamic link for exporting by taking the current endpoint and replacing 'report_' with 'export_' #}
+        {% set export_url = url_for(request.endpoint.replace('report_', 'export_'), **request.args) %}
+        <a href="{{ export_url }}" class="btn btn-success">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Експорт в CSV
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+         <div class="d-flex justify-content-between">
+            <p class="card-text">Намерени резултати: <strong>{{ total_count }}</strong></p>
+            {% if total_borrows is defined %}
+            <p class="card-text">Общо заемания за периода: <strong>{{ total_borrows }}</strong></p>
+            {% endif %}
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        {% for header in headers %}
+                            <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in results %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>{{ cell }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="{{ headers|length }}" class="text-center">Няма намерени резултати за избрания период.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

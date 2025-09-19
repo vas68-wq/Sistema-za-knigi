@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Детайли за читател: {{ reader.full_name }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('readers.readers_list_page') }}" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Обратно към списъка</a>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title mb-0">Картон на читател: {{ reader.full_name }} (№ {{ reader.reader_no }})</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Имена:</strong> {{ reader.full_name }}</p>
+                <p><strong>Читателски номер:</strong> {{ reader.reader_no }}</p>
+                <p><strong>Населено място:</strong> {{ reader.city }}</p>
+                <p><strong>Адрес:</strong> {{ reader.address }}</p>
+                <p><strong>Телефон:</strong> {{ reader.phone }}</p>
+                <p><strong>Имейл:</strong> {{ reader.email }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Професия:</strong> {{ reader.profession }}</p>
+                <p><strong>Образование:</strong> {{ reader.education }}</p>
+                <p><strong>Пол:</strong> {{ reader.gender }}</p>
+                <p><strong>Под 14 г.:</strong> {% if reader.is_under_14 %}Да{% else %}Не{% endif %}</p>
+                <p><strong>Дата на регистрация:</strong> {{ reader.registration_date|dmy }}</p>
+                 <p><strong>Последна регистрация:</strong> {{ reader.last_registration_year }}</p>
+            </div>
+        </div>
+        <hr>
+        <a href="{{ url_for('readers.edit_reader_page', reader_no=reader.reader_no) }}" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Редактирай данните</a>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white">
+        <h5><i class="bi bi-arrow-right-square"></i> Текущо заети книги</h5>
+    </div>
+    <div class="card-body">
+        {% if current_borrows %}
+        <ul class="list-group list-group-flush">
+            {% for borrow in current_borrows %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{{ url_for('books.book_details_page', tom_no=borrow.tom_no) }}">{{ borrow.title }}</a>
+                    <small class="d-block text-muted">Взета на: {{ borrow.borrow_date|dmy }} | Краен срок: {{ borrow.due_date|dmy }}</small>
+                </div>
+                {% set fine = calculate_fine(borrow.due_date) %}
+                {% if fine > 0 %}
+                    <span class="badge bg-danger rounded-pill">Просрочие: {{ fine }} лв.</span>
+                {% else %}
+                     <span class="badge bg-success rounded-pill">В срок</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-center text-muted">Няма текущо заети книги.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-danger text-white">
+        <h5><i class="bi bi-cash-coin"></i> Неплатени глоби</h5>
+    </div>
+    <div class="card-body">
+        {% if unpaid_fines %}
+        <ul class="list-group list-group-flush">
+            {% for fine_info in unpaid_fines %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="{{ url_for('books.book_details_page', tom_no=fine_info.tom_no) }}">{{ fine_info.title }}</a>
+                    <small class="d-block text-muted">Върната на: {{ fine_info.return_date|dmy }}</small>
+                </div>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-warning text-dark me-3">Глоба: {{ fine_info.fine_amount }} лв.</span>
+                    <form action="{{ url_for('transactions.pay_fine', borrow_id=fine_info.borrow_id) }}" method="post" onsubmit="return confirm('Сигурни ли сте, че глобата е платена?');">
+                        <button type="submit" class="btn btn-sm btn-success">Плати</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-center text-muted">Няма неплатени глоби.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header">
+        <h5><i class="bi bi-clock-history"></i> История на заеманията</h5>
+    </div>
+    <div class="card-body">
+        {% if borrow_history %}
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th>Заглавие</th>
+                        <th>Дата на заемане</th>
+                        <th>Дата на връщане</th>
+                        <th>Глоба</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in borrow_history %}
+                    <tr>
+                        <td><a href="{{ url_for('books.book_details_page', tom_no=item.tom_no) }}">{{ item.title }}</a></td>
+                        <td>{{ item.borrow_date|dmy }}</td>
+                        <td>{{ item.return_date|dmy if item.return_date else 'Не е върната' }}</td>
+                        <td>
+                            {% if item.fine_amount and item.fine_amount > 0 %}
+                                {% if item.fine_paid_date %}
+                                    <span class="badge bg-success">Платена ({{ item.fine_amount }} лв.)</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Неплатена ({{ item.fine_amount }} лв.)</span>
+                                {% endif %}
+                            {% else %}
+                                ---
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-muted">Няма история на заеманията.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

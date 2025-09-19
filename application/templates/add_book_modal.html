@@ -1,0 +1,30 @@
+<div class="modal fade" id="addBookModal" tabindex="-1" aria-labelledby="addBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBookModalLabel">Добавяне на нова книга</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('books.add_book_action') }}" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label for="inv_number" class="form-label">Инвентарен номер (том/партида)</label><input type="text" class="form-control" id="inv_number" name="inv_number" required></div>
+                        <div class="col-md-6 mb-3"><label for="isbn" class="form-label">ISBN</label><input type="text" class="form-control" id="isbn" name="isbn"></div>
+                    </div>
+                    <div class="mb-3"><label for="title" class="form-label">Заглавие</label><input type="text" class="form-control" id="title" name="title" required></div>
+                    <div class="mb-3"><label for="author" class="form-label">Автор</label><input type="text" class="form-control" id="author" name="author" required></div>
+                    <div class="row">
+                         <div class="col-md-6 mb-3"><label for="genre" class="form-label">Жанр</label><input class="form-control" list="genresDatalistModal" id="genre" name="genre" placeholder="Изберете или напишете нов..."><datalist id="genresDatalistModal">{% for genre in genres_for_modal %}<option value="{{ genre.name }}">{% endfor %}</datalist></div>
+                        <div class="col-md-6 mb-3"><label for="publish_year" class="form-label">Година на издаване</label><input type="number" class="form-control" id="publish_year" name="publish_year"></div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-6 mb-3"><label for="price" class="form-label">Цена (лв.)</label><input type="text" class="form-control" id="price" name="price" pattern="[0-9]+([,\.][0-9]{1,2})?"></div>
+                        <div class="col-md-6 mb-3 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" id="is_donation" name="is_donation" value="1"><label class="form-check-label" for="is_donation">Книгата е дарение</label></div></div>
+                    </div>
+                    <div class="mb-3"><label for="cover_image" class="form-label">Изображение на корица</label><input class="form-control" type="file" id="cover_image" name="cover_image" accept="image/*"></div>
+                    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button><button type="submit" class="btn btn-primary">Запази книгата</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

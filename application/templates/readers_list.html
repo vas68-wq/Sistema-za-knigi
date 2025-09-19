@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Списък с читатели - Библиотечна система{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Към таблото
+    </a>
+    <h1 class="mb-0 mx-auto"><i class="bi bi-people-fill"></i> Списък с читатели</h1>
+    
+    <div>
+        <a href="{{ url_for('readers.import_readers_page') }}" class="btn btn-info"><i class="bi bi-upload"></i> Импорт</a>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReaderModal">
+            <i class="bi bi-person-plus-fill"></i> Нов читател
+        </button>
+    </div>
+</div>
+
+<div class="mb-4">
+    <div class="input-group">
+        <input type="text" id="search-input" class="form-control" placeholder="Търси по име или читателски номер..." autofocus>
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Читателски №</th>
+                <th>Име</th>
+                <th>Телефон</th>
+                <th>Регистрация {{ current_year }}г.</th>
+                <th class="text-center">Действия</th>
+            </tr>
+        </thead>
+        <tbody id="readers-tbody">
+            <tr>
+                <td colspan="5" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% include 'add_reader_modal_dynamic.html' %}
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search-input');
+    const tableBody = document.getElementById('readers-tbody');
+    const apiEndpoint = "{{ url_for('readers.api_readers') }}";
+    const currentYear = {{ current_year }};
+
+    function fetchAndRenderReaders(query = '') {
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center"><div class="spinner-border text-primary" role="status"></div></td></tr>`;
+
+        fetch(`${apiEndpoint}?query=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                tableBody.innerHTML = '';
+
+                if (data.length === 0) {
+                    const message = query ? `Няма намерени резултати за "${query}".` : 'Няма регистрирани читатели.';
+                    tableBody.innerHTML = `<tr><td colspan="5" class="text-center">${message}</td></tr>`;
+                    return;
+                }
+
+                data.forEach(reader => {
+                    const regStatus = reader.last_registration_year == currentYear
+                        ? `<span class="badge bg-success">Подновен</span>`
+                        : `<span class="badge bg-danger">Неподновен</span>`;
+
+                    const renewButton = reader.last_registration_year != currentYear
+                        ? `<form action="/renew_reader/${reader.reader_no}" method="post" class="d-inline">
+                               <button type="submit" class="btn btn-sm btn-success" title="Подновяване"><i class="bi bi-check-circle-fill"></i> Поднови</button>
+                           </form>`
+                        : `<button type="button" class="btn btn-sm btn-secondary" disabled title="Подновен"><i class="bi bi-check-circle-fill"></i> Подновен</button>`;
+
+                    const rowHTML = `
+                        <tr>
+                            <td>${reader.reader_no}</td>
+                            <td><a href="/reader/${reader.reader_no}">${reader.full_name}</a></td>
+                            <td>${reader.phone || ''}</td>
+                            <td>${regStatus}</td>
+                            <td class="text-center">
+                                ${renewButton}
+                                <a href="/edit_reader/${reader.reader_no}" class="btn btn-sm btn-primary" title="Редактирай"><i class="bi bi-pencil-square"></i></a>
+                                <form action="/delete_reader/${reader.reader_no}" method="post" class="d-inline" onsubmit="return confirm('Сигурни ли сте?');">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Изтрий"><i class="bi bi-trash-fill"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', rowHTML);
+                });
+            })
+            .catch(error => {
+                console.error('Грешка при зареждане на данните:', error);
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Възникна грешка.</td></tr>`;
+            });
+    }
+
+    let debounceTimeout;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(() => {
+            fetchAndRenderReaders(searchInput.value);
+        }, 300);
+    });
+
+    fetchAndRenderReaders();
+});
+</script>
+{% endblock %}

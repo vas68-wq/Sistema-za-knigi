@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Добавяне на потребител{% endblock %}
+
+{% block content %}
+<h1><i class="bi bi-person-plus-fill"></i> Добавяне на нов потребител</h1>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <form action="{{ url_for('auth.add_user_page') }}" method="post">
+            <div class="mb-3">
+                <label for="username" class="form-label">Потребителско име</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Парола</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">Роля</label>
+                <select class="form-select" id="role" name="role">
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            <hr>
+            <a href="{{ url_for('auth.users_page') }}" class="btn btn-secondary">Отказ</a>
+            <button type="submit" class="btn btn-primary">Създай потребител</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

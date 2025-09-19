@@ -1,0 +1,60 @@
+{% extends "base.html" if 'user_id' in session else "public_base.html" %}
+
+{% block title %}Детайли за книга: {{ book.title }}{% endblock %}
+
+{% block content %}
+<a href="{{ request.args.get('back_url') or url_for('books.books_list_page') }}" class="btn btn-outline-secondary mb-3"><i class="bi bi-arrow-left"></i> Обратно към списъка</a>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header"><h2 class="card-title mb-0">Картон на книга: {{ book.title }}</h2></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                {% set image_url = url_for('books.serve_cover', filename=book.cover_image) if book.cover_image else url_for('static', filename='placeholder.png') %}
+                <img src="{{ image_url }}" class="img-fluid rounded shadow-sm mb-3" alt="Корица" style="max-height: 400px; object-fit: cover;" onerror="this.onerror=null; this.src='{{ url_for('static', filename='placeholder.png') }}';">
+            </div>
+            <div class="col-md-8">
+                <h3>{{ book.title }}</h3>
+                <p class="text-muted">от {{ book.author }}</p><hr>
+                <p><strong>Инвентарен номер:</strong> {{ book.tom_no }}</p>
+                <p><strong>ISBN:</strong> {{ book.isbn or 'Няма' }}</p>
+                <p><strong>Жанр:</strong> {{ book.genre or 'Няма' }}</p>
+                <p><strong>Година:</strong> {{ book.publish_year or 'Няма' }}</p>
+                {% if 'user_id' in session %}
+                    <p><strong>Цена:</strong> {{ "%.2f лв."|format(book.price) if book.price is not none }}</p>
+                    <p><strong>Тип:</strong> {% if book.is_donation %}Дарение{% else %}Покупка{% endif %}</p>
+                    <p><strong>Дата на записване:</strong> {{ book.record_date|dmy }}</p>
+                    <hr>
+                    <a href="{{ url_for('books.edit_book_page', tom_no=book.tom_no, back_url=request.args.get('back_url')) }}" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Редактирай</a>
+                    <form action="{{ url_for('books.delete_book', tom_no=book.tom_no) }}" method="post" class="d-inline" onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази книга?');">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Изтрий</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if 'user_id' in session and borrow_history %}
+<div class="card mt-4">
+    <div class="card-header"><h5><i class="bi bi-clock-history"></i> История на заеманията</h5></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover">
+                <thead><tr><th>Читател</th><th>Дата на заемане</th><th>Дата на връщане</th><th>Подпис</th></tr></thead>
+                <tbody>
+                    {% for item in borrow_history %}
+                    <tr>
+                        <td><a href="{{ url_for('readers.reader_details_page', reader_no=item.reader_no) }}">{{ item.full_name }}</a></td>
+                        <td>{{ item.borrow_date|dmy }}</td>
+                        <td>{{ item.return_date|dmy if item.return_date else 'Не е върната' }}</td>
+                        <td>{% if item.signature_path %}<a href="{{ url_for('transactions.serve_signature', filename=item.signature_path) }}" target="_blank">Виж</a>{% else %}---{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Демографска справка (графики){% endblock %}
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+{% block content %}
+<h1>Демографска справка</h1>
+<p>Период: {{ period_text }}</p>
+<div class="charts">
+  <canvas id="genderChart"></canvas>
+  <canvas id="profChart"></canvas>
+  <canvas id="eduChart"></canvas>
+</div>
+<p style="margin-top:16px">
+  <a class="btn" href="{{ url_for('reports.export_reader_stats_xlsx') }}">Експорт в Excel</a>
+  <a class="btn" href="{{ url_for('reports.export_reader_stats_pdf') }}">Експорт в PDF</a>
+</p>
+<script>
+function toArrays(rows, key){ return rows.map(r => [r[key] || 'Непосочено', r['count']]); }
+const gender = toArrays({{ gender_stats|tojson }}, 'gender');
+const prof = toArrays({{ profession_stats|tojson }}, 'profession');
+const edu = toArrays({{ education_stats|tojson }}, 'education');
+
+function draw(id, title, data){
+  const labels = data.map(d=>d[0]); const values = data.map(d=>d[1]);
+  new Chart(document.getElementById(id).getContext('2d'), {
+    type: 'bar', data: {labels, datasets:[{label: title, data: values}]},
+    options:{responsive:true, plugins:{legend:{display:false}}}
+  });
+}
+draw('genderChart','По пол', gender);
+draw('profChart','По професия', prof);
+draw('eduChart','По образование', edu);
+</script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a href="{{ url_for('reports.reports_page') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Обратно към Справки</a>
+        <h1 class="d-inline-block ms-3">{{ title }}</h1>
+    </div>
+    <div>
+        <a href="{{ url_for('reports.export_report_activity', year=year, start_date=start_date, end_date=end_date) }}" class="btn btn-success">
+            <i class="bi bi-file-earmark-spreadsheet-fill"></i> Експорт в CSV
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Общо дейности</h5>
+                <p class="card-text display-6">{{ total_activities }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Уникални потребители</h5>
+                <p class="card-text display-6">{{ activity_by_user|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center h-100">
+            <div class="card-body">
+                <h5 class="card-title">Типове действия</h5>
+                <p class="card-text display-6">{{ activity_by_action|length }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Дейности по потребител</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for user_activity in activity_by_user %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ user_activity.username }}
+                        <span class="badge bg-primary rounded-pill">{{ user_activity.count }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Няма данни.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Дейности по тип</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for action_activity in activity_by_action %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ action_activity.action }}
+                        <span class="badge bg-success rounded-pill">{{ action_activity.count }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Няма данни.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-2">
+    <div class="card-header">
+        <h5 class="card-title mb-0">Пълен лог за периода</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" style="max-height: 400px;">
+            <table class="table table-sm table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Време</th>
+                        <th>Потребител</th>
+                        <th>Действие</th>
+                        <th>Детайли</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in full_log %}
+                    <tr>
+                        <td>{{ entry.timestamp|dmy }}</td>
+                        <td>{{ entry.username }}</td>
+                        <td>{{ entry.action }}</td>
+                        <td>{{ entry.details }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Няма записи за избрания период.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

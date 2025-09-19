@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block title %}Заемане на книга{% endblock %}
+
+{% block head_extra %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <style>
+        .signature-pad {
+            border: 1px solid #ccc;
+            border-radius: .25rem;
+            width: 100%;
+            height: 200px;
+            background-color: #f8f9fa;
+            cursor: crosshair;
+        }
+        @media (max-width: 767.98px) {
+            .btn-group-borrow .btn {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+        /* НОВО: Центриране на плейсхолдъра и курсора в Select2 полетата */
+        .select2-selection__placeholder {
+            text-align: center;
+        }
+        .select2-search__field {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Към таблото
+            </a>
+            <h1 class="mb-0 mx-auto"><i class="bi bi-arrow-right-square"></i> Заемане на книга</h1>
+            <div style="width: 130px;"></div> {# Spacer to keep the title centered #}
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form id="borrowForm" action="{{ url_for('transactions.process_borrow') }}" method="post">
+                    <div class="mb-3">
+                        <label for="reader_no" class="form-label text-center d-block">Избери читател</label>
+                        <select class="form-select" id="reader_no" name="reader_no" required>
+                            <option></option> {% for reader in readers %}
+                                <option value="{{ reader.reader_no }}" {% if selected_reader and selected_reader == reader.reader_no %}selected{% endif %}>
+                                    {{ reader.full_name }} (№ {{ reader.reader_no }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="book_tom_no" class="form-label text-center d-block">Избери книга</label>
+                        <select class="form-select" id="book_tom_no" name="book_tom_no" required>
+                            <option></option> {% for book in books %}
+                                <option value="{{ book.tom_no }}">{{ book.title }} - {{ book.author }} (Инв.№ {{ book.tom_no }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <hr>
+                    
+                    <div id="signature-section" class="mb-3 text-center">
+                        <label class="form-label">Подпис на читателя (на екрана)</label>
+                        <canvas id="signature-pad" class="signature-pad"></canvas>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="clear-signature">Изчисти</button>
+                        </div>
+                        <input type="hidden" name="signature" id="signature-data">
+                        <input type="hidden" name="next_action" id="next_action" value="">
+                    </div>
+                    
+                    <div class="d-flex justify-content-between gap-2 mt-4 btn-group-borrow">
+                         <button type="button" class="btn btn-info btn-lg flex-fill" id="request-signature-btn">
+                            <i class="bi bi-tablet"></i> От таблет
+                        </button>
+                        <button type="submit" class="btn btn-success btn-lg flex-fill" id="submit-borrow-finish">
+                            <i class="bi bi-check-circle-fill"></i> Заеми
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-lg flex-fill" id="submit-borrow-and-add">
+                            <i class="bi bi-plus-circle-fill"></i> Заеми и добави
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="tablet-instructions" class="alert alert-info mt-3" style="display: none;">
+            <div class="d-flex align-items-center">
+                <div class="spinner-border text-primary me-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <div>
+                    <strong>Моля, подайте таблета на читателя, за да се подпише.</strong><br>
+                    Изчаква се подпис...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // --- Initialize Select2 ---
+        $('#reader_no, #book_tom_no').select2({
+            theme: "bootstrap-5",
+            placeholder: "Моля, изберете...",
+            allowClear: true
+        });
+
+        // --- Initialize Signature Pad ---
+        const canvas = document.getElementById('signature-pad');
+        const signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgb(248, 249, 250)' });
+
+        function resizeCanvas() {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+            signaturePad.clear();
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        document.getElementById('clear-signature').addEventListener('click', () => signaturePad.clear());
+
+        // --- Form and Button Logic ---
+        const borrowForm = document.getElementById('borrowForm');
+        const nextActionInput = document.getElementById('next_action');
+        const signatureDataInput = document.getElementById('signature-data');
+        const btnFinish = document.getElementById('submit-borrow-finish');
+        const btnAddAnother = document.getElementById('submit-borrow-and-add');
+        const btnRequestTablet = document.getElementById('request-signature-btn');
+        
+        function prepareAndSubmit() {
+            if (!borrowForm.checkValidity()) {
+                borrowForm.reportValidity();
+                return;
+            }
+            if (!signaturePad.isEmpty()) {
+                signatureDataInput.value = signaturePad.toDataURL('image/png');
+            } else {
+                signatureDataInput.value = '';
+            }
+            borrowForm.submit();
+        }
+
+        btnFinish.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextActionInput.value = 'finish';
+            prepareAndSubmit();
+        });
+
+        btnAddAnother.addEventListener('click', (e) => {
+            e.preventDefault();
+            nextActionInput.value = 'borrow_another';
+            prepareAndSubmit();
+        });
+
+
+        // --- Initialize Socket.IO ---
+        const socket = io();
+        socket.on('connect', () => console.log('Connected to WebSocket server'));
+        
+        socket.on('no_tablet_available', () => {
+            alert('Грешка: Не е открит свързан таблет. Моля, отворете страницата на таблета и опреснете тази страница.');
+            document.getElementById('tablet-instructions').style.display = 'none';
+        });
+
+        socket.on('signature_received', (data) => {
+            if (data.signature) {
+                signaturePad.fromDataURL(data.signature);
+                document.getElementById('tablet-instructions').style.display = 'none';
+            }
+        });
+
+        btnRequestTablet.addEventListener('click', () => {
+            const bookSelect = document.getElementById('book_tom_no');
+            const readerSelect = document.getElementById('reader_no');
+
+            if (!bookSelect.value || !readerSelect.value) {
+                alert('Моля, изберете читател и книга.');
+                return;
+            }
+
+            document.getElementById('tablet-instructions').style.display = 'block';
+            socket.emit('request_signature', {
+                book_info: bookSelect.options[bookSelect.selectedIndex].text,
+                reader_info: readerSelect.options[readerSelect.selectedIndex].text
+            });
+        });
+    });
+</script>
+
+{% endblock %}
