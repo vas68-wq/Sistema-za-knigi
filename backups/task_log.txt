@@ -1,0 +1,214 @@
+'C:\Windows\py.exe' is not recognized as an internal or external command,
+operable program or batch file.
+=== пет 15.08.2025 г. 17:45:14,72 START 
+Backup OK -> D:\═ютр яряър (2)\╧╨╬┼╩╥_╘╚═└╦_2_with_backup\╧╨╬┼╩╥ ╘╚═└╦ 2\backups\library_2025-08-15_17-45-14.sqlite.zip
+=== пет 15.08.2025 г. 17:45:15,01 END   
+'C:\Windows\py.exe' is not recognized as an internal or external command,
+operable program or batch file.
+=== пет 15.08.2025 г. 18:26:08,23 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_18-26-08.sqlite.zip
+=== пет 15.08.2025 г. 18:26:08,50 END   
+=== пет 15.08.2025 г. 18:57:13,05 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_18-57-13.sqlite.zip
+=== пет 15.08.2025 г. 18:57:13,35 END   
+=== пет 15.08.2025 г. 18:57:15,92 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_18-57-16.sqlite.zip
+=== пет 15.08.2025 г. 18:57:16,20 END   
+=== пет 15.08.2025 г. 18:57:17,12 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_18-57-17.sqlite.zip
+=== пет 15.08.2025 г. 18:57:17,41 END   
+=== пет 15.08.2025 г. 19:13:04,80 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_19-13-04.sqlite.zip
+=== пет 15.08.2025 г. 19:13:05,09 END   
+=== пет 15.08.2025 г. 19:15:45,51 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_19-15-45.sqlite.zip
+=== пет 15.08.2025 г. 19:15:45,79 END   
+=== пет 15.08.2025 г. 19:18:00,64 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_19-18-00.sqlite.zip
+=== пет 15.08.2025 г. 19:18:00,94 END   
+=== пет 15.08.2025 г. 21:01:19,15 START 
+The system cannot find the path specified.
+=== пет 15.08.2025 г. 21:01:19,19 END   
+=== пет 15.08.2025 г. 21:01:43,81 START 
+The system cannot find the path specified.
+=== пет 15.08.2025 г. 21:01:43,84 END   
+=== Fri 08/15/2025 21:04:02.27 START 
+The system cannot find the path specified.
+=== Fri 08/15/2025 21:04:02.29 END   
+=== Fri 08/15/2025 21:04:05.93 START 
+The system cannot find the path specified.
+=== Fri 08/15/2025 21:04:05.95 END   
+=== Fri 08/15/2025 21:06:00.08 START 
+The system cannot find the path specified.
+=== Fri 08/15/2025 21:06:00.10 END   
+=== Fri 08/15/2025 21:07:11.75 START 
+The system cannot find the path specified.
+=== Fri 08/15/2025 21:07:11.77 END   
+=== Fri 08/15/2025 21:07:25.62 START 
+The system cannot find the path specified.
+=== Fri 08/15/2025 21:07:25.64 END   
+=== пет 15.08.2025 г. 21:08:27,03 START 
+The system cannot find the path specified.
+=== пет 15.08.2025 г. 21:08:27,05 END   
+=== пет 15.08.2025 г. 21:11:18,11 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_21-11-18.sqlite.zip
+=== пет 15.08.2025 г. 21:11:18,53 END   
+=== Fri 08/15/2025 21:11:47.13 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_21-11-47.sqlite.zip
+=== Fri 08/15/2025 21:11:47.53 END   
+=== Fri 08/15/2025 21:11:59.03 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_21-11-59.sqlite.zip
+=== Fri 08/15/2025 21:11:59.40 END   
+=== Fri 08/15/2025 21:13:00.08 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-15_21-13-00.sqlite.zip
+=== Fri 08/15/2025 21:13:00.44 END   
+=== Sat 08/16/2025 11:45:36.25 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-16_11-45-41.sqlite.zip
+=== Sat 08/16/2025 11:45:41.80 END   
+=== Sat 08/16/2025 16:04:38.21 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-16_16-04-42.sqlite.zip
+=== Sat 08/16/2025 16:04:43.57 END   
+=== Sat 08/16/2025 17:00:01.73 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-16_17-00-01.sqlite.zip
+=== Sat 08/16/2025 17:00:02.11 END   
+=== Sun 08/17/2025 17:00:01.77 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-17_17-00-01.sqlite.zip
+=== Sun 08/17/2025 17:00:02.24 END   
+=== Mon 08/18/2025 17:00:01.76 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-18_17-00-01.sqlite.zip
+=== Mon 08/18/2025 17:00:02.12 END   
+=== Mon 08/18/2025 20:40:58.45 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-18_20-41-01.sqlite.zip
+=== Mon 08/18/2025 20:41:02.73 END   
+=== Tue 08/19/2025 17:00:01.84 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-19_17-00-01.sqlite.zip
+=== Tue 08/19/2025 17:00:02.20 END   
+=== Wed 08/20/2025 17:00:01.95 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-20_17-00-02.sqlite.zip
+=== Wed 08/20/2025 17:00:02.44 END   
+=== Wed 08/20/2025 17:59:46.92 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-20_18-00-06.sqlite.zip
+=== Wed 08/20/2025 18:00:06.83 END   
+=== Thu 08/21/2025 17:00:02.08 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-21_17-00-02.sqlite.zip
+=== Thu 08/21/2025 17:00:02.53 END   
+=== Fri 08/22/2025 17:00:02.09 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-22_17-00-02.sqlite.zip
+=== Fri 08/22/2025 17:00:02.47 END   
+=== Sat 08/23/2025 17:00:02.10 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-23_17-00-02.sqlite.zip
+=== Sat 08/23/2025 17:00:02.48 END   
+=== Sun 08/24/2025 17:00:02.11 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-24_17-00-02.sqlite.zip
+=== Sun 08/24/2025 17:00:02.48 END   
+=== Mon 08/25/2025 17:00:02.11 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-25_17-00-02.sqlite.zip
+=== Mon 08/25/2025 17:00:02.47 END   
+=== Tue 08/26/2025 17:00:01.10 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-26_17-00-01.sqlite.zip
+=== Tue 08/26/2025 17:00:01.49 END   
+=== Wed 08/27/2025 17:00:01.22 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-27_17-00-01.sqlite.zip
+=== Wed 08/27/2025 17:00:01.73 END   
+=== Wed 08/27/2025 17:46:31.36 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-27_17-46-35.sqlite.zip
+=== Wed 08/27/2025 17:46:36.78 END   
+=== Thu 08/28/2025 17:00:01.42 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-28_17-00-01.sqlite.zip
+=== Thu 08/28/2025 17:00:01.86 END   
+=== Fri 08/29/2025 17:00:01.43 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-29_17-00-01.sqlite.zip
+=== Fri 08/29/2025 17:00:01.87 END   
+=== Sat 08/30/2025 17:00:01.44 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-30_17-00-01.sqlite.zip
+=== Sat 08/30/2025 17:00:01.92 END   
+=== Sun 08/31/2025 17:00:01.44 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-08-31_17-00-01.sqlite.zip
+=== Sun 08/31/2025 17:00:01.87 END   
+=== Mon 09/01/2025 17:00:01.44 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-01_17-00-01.sqlite.zip
+=== Mon 09/01/2025 17:00:01.88 END   
+=== вт 02.09.2025 г.  5:39:21,22 START 
+The system cannot find the path specified.
+=== вт 02.09.2025 г.  5:39:21,27 END   
+=== Tue 09/02/2025 17:00:01.46 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-02_17-00-01.sqlite.zip
+=== Tue 09/02/2025 17:00:01.81 END   
+=== Tue 09/02/2025 18:06:35.98 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-02_18-06-36.sqlite.zip
+=== Tue 09/02/2025 18:06:36.36 END   
+=== Tue 09/02/2025 18:07:16.50 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-02_18-07-16.sqlite.zip
+=== Tue 09/02/2025 18:07:16.90 END   
+=== Wed 09/03/2025 17:00:01.48 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-03_17-00-01.sqlite.zip
+=== Wed 09/03/2025 17:00:01.85 END   
+=== Thu 09/04/2025 17:00:01.50 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-04_17-00-01.sqlite.zip
+=== Thu 09/04/2025 17:00:01.89 END   
+=== Fri 09/05/2025 17:00:01.69 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-05_17-00-01.sqlite.zip
+=== Fri 09/05/2025 17:00:02.11 END   
+=== Sat 09/06/2025 17:00:01.71 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-06_17-00-01.sqlite.zip
+=== Sat 09/06/2025 17:00:02.11 END   
+=== Mon 09/08/2025 17:00:01.74 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-08_17-00-01.sqlite.zip
+=== Mon 09/08/2025 17:00:02.07 END   
+=== Tue 09/09/2025 17:00:01.76 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-09_17-00-01.sqlite.zip
+=== Tue 09/09/2025 17:00:02.12 END   
+=== Wed 09/10/2025 17:00:01.84 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-10_17-00-02.sqlite.zip
+=== Wed 09/10/2025 17:00:02.37 END   
+=== Wed 09/10/2025 17:37:05.95 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-10_17-37-24.sqlite.zip
+=== Wed 09/10/2025 17:37:25.70 END   
+=== Thu 09/11/2025 17:00:01.67 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-11_17-00-01.sqlite.zip
+=== Thu 09/11/2025 17:00:02.06 END   
+=== Fri 09/12/2025 17:00:01.68 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-12_17-00-01.sqlite.zip
+=== Fri 09/12/2025 17:00:02.08 END   
+=== Sat 09/13/2025 17:00:01.68 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-13_17-00-01.sqlite.zip
+=== Sat 09/13/2025 17:00:02.06 END   
+=== Sun 09/14/2025 17:00:01.69 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-14_17-00-01.sqlite.zip
+=== Sun 09/14/2025 17:00:02.05 END   
+=== Mon 09/15/2025 17:00:01.73 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-15_17-00-01.sqlite.zip
+=== Mon 09/15/2025 17:00:02.10 END   
+=== Tue 09/16/2025 17:00:01.73 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-16_17-00-01.sqlite.zip
+=== Tue 09/16/2025 17:00:02.11 END   
+=== Wed 09/17/2025 17:00:01.75 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-17_17-00-01.sqlite.zip
+=== Wed 09/17/2025 17:00:02.13 END   
+=== Thu 09/18/2025 17:00:01.74 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-18_17-00-01.sqlite.zip
+=== Thu 09/18/2025 17:00:02.10 END   
+=== Sat 09/20/2025 17:00:01.77 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-20_17-00-01.sqlite.zip
+=== Sat 09/20/2025 17:00:02.16 END   
+=== Sun 09/21/2025 17:00:01.77 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-21_17-00-01.sqlite.zip
+=== Sun 09/21/2025 17:00:02.14 END   
+=== Mon 09/22/2025 17:00:01.76 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-22_17-00-01.sqlite.zip
+=== Mon 09/22/2025 17:00:02.26 END   
+=== Tue 09/23/2025 17:00:01.80 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-23_17-00-02.sqlite.zip
+=== Tue 09/23/2025 17:00:02.24 END   
+=== Wed 09/24/2025 17:00:01.80 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-24_17-00-01.sqlite.zip
+=== Wed 09/24/2025 17:00:02.26 END   
+=== Thu 09/25/2025 17:00:01.80 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-25_17-00-01.sqlite.zip
+=== Thu 09/25/2025 17:00:02.24 END   
+=== Fri 09/26/2025  6:42:42.30 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-26_06-42-44.sqlite.zip
+=== Fri 09/26/2025  6:42:45.11 END   
+=== Fri 09/26/2025 17:00:01.16 START 
+Backup OK -> C:\LibraryApp\PROJECT_FINAL_2\backups\library_2025-09-26_17-00-01.sqlite.zip
+=== Fri 09/26/2025 17:00:01.55 END   

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <a href="{{ url_for('reports.reports_page') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Обратно към Справки</a>
+        <h1 class="d-inline-block ms-3">{{ title }}</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="bi bi-gender-ambiguous"></i> Разпределение по пол</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for stat in gender_stats %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ stat.gender or 'Непосочен' }}
+                        <span class="badge bg-primary rounded-pill">{{ stat.count }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Няма данни.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="bi bi-briefcase-fill"></i> Разпределение по професия</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for stat in profession_stats %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ stat.profession or 'Непосочена' }}
+                        <span class="badge bg-success rounded-pill">{{ stat.count }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Няма данни.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                 <h5 class="card-title mb-0"><i class="bi bi-mortarboard-fill"></i> Разпределение по образование</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for stat in education_stats %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ stat.education or 'Непосочено' }}
+                        <span class="badge bg-info rounded-pill">{{ stat.count }}</span>
+                    </li>
+                    {% else %}
+                    <li class="list-group-item">Няма данни.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

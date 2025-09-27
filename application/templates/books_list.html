@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Книги{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <a href="{{ url_for('main.index') }}" class="text-secondary d-block mb-3"><i class="fas fa-arrow-left"></i> Обратно към таблото</a>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Списък с книги (<span id="totalBooksCount">0</span>)</h2>
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                <i class="fas fa-plus"></i> Добави нова книга
+            </button>
+            <a href="{{ url_for('books.import_books_page') }}" class="btn btn-secondary">
+                <i class="fas fa-file-import"></i> Импорт
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Търсене по инв.№, заглавие или автор...">
+                <button class="btn btn-outline-secondary" type="button" id="search-button"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="loading-spinner" class="text-center" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div id="books-table-container">
+        </div>
+    
+    <div id="pagination-container" class="d-flex justify-content-center mt-3">
+        </div>
+</div>
+
+{% include 'add_book_modal.html' %}
+{% include 'edit_book_modal.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const genres_for_modal = {{ genres_for_modal|tojson }};
+</script>
+<script src="{{ url_for('static', filename='books_list_logic.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,35 @@
+<div class="modal fade" id="addReaderModal" tabindex="-1" aria-labelledby="addReaderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addReaderModalLabel">Регистриране на нов читател</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('readers.add_reader_action') }}" method="post">
+                    <div class="row">
+                        <div class="col-md-4 mb-3"><label for="reader_no_modal" class="form-label">Читателски номер</label><input type="text" class="form-control" id="reader_no_modal" name="reader_no" required></div>
+                        <div class="col-md-8 mb-3"><label for="full_name_modal" class="form-label">Трите имена</label><input type="text" class="form-control" id="full_name_modal" name="full_name" required></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label for="city_modal" class="form-label">Населено място</label><input type="text" class="form-control" id="city_modal" name="city"></div>
+                        <div class="col-md-6 mb-3"><label for="address_modal" class="form-label">Адрес</label><input type="text" class="form-control" id="address_modal" name="address"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label for="phone_modal" class="form-label">Телефон</label><input type="tel" class="form-control" id="phone_modal" name="phone"></div>
+                        <div class="col-md-6 mb-3"><label for="email_modal" class="form-label">Имейл</label><input type="email" class="form-control" id="email_modal" name="email"></div>
+                    </div>
+                     <div class="row">
+                         <div class="col-md-6 mb-3"><label for="profession_modal" class="form-label">Професия</label><input class="form-control" list="professionsDatalistModal" id="profession_modal" name="profession" placeholder="Изберете или напишете нова..."><datalist id="professionsDatalistModal"></datalist></div>
+                        <div class="col-md-6 mb-3"><label for="education_modal" class="form-label">Образование</label><input class="form-control" list="educationsDatalistModal" id="education_modal" name="education" placeholder="Изберете или напишете ново..."><datalist id="educationsDatalistModal"></datalist></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3"><label class="form-label">Пол</label><div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="gender" id="gender_male_modal" value="Мъж" checked><label class="form-check-label" for="gender_male_modal">Мъж</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="gender" id="gender_female_modal" value="Жена"><label class="form-check-label" for="gender_female_modal">Жена</label></div></div></div>
+                        <div class="col-md-6 mb-3 d-flex align-items-center"><div class="form-check"><input class="form-check-input" type="checkbox" id="is_under_14_modal" name="is_under_14" value="1"><label class="form-check-label" for="is_under_14_modal">Читател под 14 г.</label></div></div>
+                    </div>
+                    <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button><button type="submit" class="btn btn-primary">Регистрирай читател</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

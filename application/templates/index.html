@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Табло за управление - Библиотечна система{% endblock %}
+
+{% block head_extra %}
+<style>
+    .latest-book-cover {
+        width: 40px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 15px;
+        background-color: #eee;
+    }
+    .action-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: white;
+        height: 100%;
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        font-size: 1.25rem;
+        transition: transform 0.2s ease-in-out;
+    }
+    .action-button:hover {
+        transform: scale(1.03);
+        color: white;
+    }
+    .action-button i {
+        font-size: 2rem;
+        margin-right: 15px;
+    }
+    .stat-card-link {
+        text-decoration: none;
+        color: white;
+        transition: transform 0.2s ease-in-out;
+        display: block;
+    }
+    .stat-card-link:hover {
+        transform: scale(1.05);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row align-items-stretch mb-4">
+    {# Колона за статистиките (9 от 12 части) #}
+    <div class="col-lg-9">
+        <div class="row h-100">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <a href="{{ url_for('books.books_list_page') }}" class="stat-card-link">
+                    <div class="card text-white bg-primary h-100 shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="bi bi-journal-bookmark-fill display-4 me-3"></i>
+                            <div>
+                                <h5 class="card-title">Общо книги</h5>
+                                <p class="card-text fs-4 fw-bold">{{ book_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-3 mb-md-0">
+                <a href="{{ url_for('readers.readers_list_page') }}" class="stat-card-link">
+                    <div class="card text-white bg-success h-100 shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="bi bi-people-fill display-4 me-3"></i>
+                            <div>
+                                <h5 class="card-title">Читатели ({{ current_year }})</h5>
+                                <p class="card-text fs-4 fw-bold">{{ reader_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('transactions.return_page') }}" class="stat-card-link">
+                    <div class="card text-white bg-warning h-100 shadow-sm">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="bi bi-arrow-down-up display-4 me-3"></i>
+                            <div>
+                                <h5 class="card-title">Заети в момента</h5>
+                                <p class="card-text fs-4 fw-bold">{{ borrowed_count }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {# Колона за новите бутони (3 от 12 части) #}
+    <div class="col-lg-3 d-flex flex-column gap-2">
+        <button type="button" class="btn btn-primary btn-block h-100 shadow-sm" data-bs-toggle="modal" data-bs-target="#addBookModal">
+            <i class="bi bi-plus-circle-fill"></i> Нова книга
+        </button>
+        <button type="button" class="btn btn-success btn-block h-100 shadow-sm" data-bs-toggle="modal" data-bs-target="#addReaderModal">
+            <i class="bi bi-person-plus-fill"></i> Нов читател
+        </button>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6 mb-3 mb-md-0">
+        <div class="card bg-danger shadow-sm h-100">
+            <a href="{{ url_for('transactions.borrow_page') }}" class="action-button">
+                <i class="bi bi-arrow-right-square"></i>
+                <span>Заемане на книга</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-success shadow-sm h-100">
+            <a href="{{ url_for('transactions.return_page') }}" class="action-button">
+                <i class="bi bi-arrow-left-square"></i>
+                <span>Връщане на книга</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-exclamation-triangle-fill"></i> Просрочени книги</span>
+                <span class="badge bg-light text-danger">{{ overdue_books|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if overdue_books %}
+                <div class="list-group list-group-flush">
+                    {% for book in overdue_books %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1"><a href="{{ url_for('books.book_details_page', tom_no=book.tom_no) }}" class="text-decoration-none">{{ book.title }}</a></h6>
+                            <span class="badge bg-danger rounded-pill align-self-start">Просрочие: {{ calculate_fine(book.due_date) }} лв.</span>
+                        </div>
+                        <p class="mb-1"><small>Читател: <a href="{{ url_for('readers.reader_details_page', reader_no=book.reader_no) }}" class="text-decoration-none">{{ book.full_name }}</a></small></p>
+                        <small class="text-muted">Краен срок: {{ book.due_date|dmy }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}<p class="text-center text-muted mt-3">Няма просрочени книги.</p>{% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm mb-4"> <div class="card-header bg-dark text-white"><i class="bi bi-pie-chart-fill"></i> Статистика по жанрове</div>
+            <div class="card-body d-flex justify-content-center align-items-center" style="min-height: 300px;"><canvas id="genreChart"></canvas></div>
+        </div>
+        <div class="card shadow-sm"> <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-cash-coin"></i> Читатели с неплатени глоби</span>
+                <span class="badge bg-light text-danger">{{ readers_with_fines|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if readers_with_fines %}
+                    <div class="list-group list-group-flush">
+                        {% for reader in readers_with_fines %}
+                            <a href="{{ url_for('readers.reader_details_page', reader_no=reader.reader_no) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-person-fill"></i> {{ reader.full_name }} (№ {{ reader.reader_no }})</span>
+                                <span class="badge bg-danger rounded-pill">{{ "%.2f лв."|format(reader.total_fine) }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-center text-muted mt-3">Няма читатели с неплатени глоби.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation"><button class="nav-link active" id="latest-books-tab" data-bs-toggle="tab" data-bs-target="#latest-books" type="button" role="tab" aria-controls="latest-books" aria-selected="true"><i class="bi bi-book"></i> Последно добавени книги</button></li>
+            <li class="nav-item" role="presentation"><button class="nav-link" id="latest-readers-tab" data-bs-toggle="tab" data-bs-target="#latest-readers" type="button" role="tab" aria-controls="latest-readers" aria-selected="false"><i class="bi bi-person-plus"></i> Последно регистрирани читатели</button></li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="latest-books" role="tabpanel" aria-labelledby="latest-books-tab">
+                <ul class="list-group list-group-flush">
+                    {% for book in latest_books %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            {% if book.cover_image %}<img src="{{ url_for('books.serve_cover', filename=book.cover_image) }}" class="latest-book-cover">
+                            {% else %}<div class="latest-book-cover d-flex align-items-center justify-content-center bg-secondary text-white"><i class="bi bi-image-alt fs-5"></i></div>{% endif %}
+                            <div><a href="{{ url_for('books.book_details_page', tom_no=book.tom_no) }}">{{ book.title }}</a><small class="d-block text-muted">{{ book.author }}</small></div>
+                        </div>
+                        <span class="badge bg-secondary rounded-pill">{{ book.record_date|dmy }}</span>
+                    </li>
+                    {% else %}<li class="list-group-item">Няма добавени книги.</li>{% endfor %}
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="latest-readers" role="tabpanel" aria-labelledby="latest-readers-tab">
+                <ul class="list-group list-group-flush">
+                    {% for reader in latest_readers %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('readers.reader_details_page', reader_no=reader.reader_no) }}">{{ reader.full_name }}</a>
+                        <span class="badge bg-secondary rounded-pill">{{ reader.registration_date|dmy }}</span>
+                    </li>
+                    {% else %}<li class="list-group-item">Няма регистрирани читатели.</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# Включваме съдържанието на модалните прозорци, за да работят бутоните #}
+{% include 'add_book_modal.html' %}
+{% include 'add_reader_modal.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const ctx = document.getElementById('genreChart');
+    if (ctx) {
+        const chartData = JSON.parse('{{ chart_data | tojson | safe }}');
+        const backgroundColors = chartData.labels.map(() => `rgba(${Math.floor(Math.random() * 200) + 55}, ${Math.floor(Math.random() * 200) + 55}, ${Math.floor(Math.random() * 200) + 55}, 0.8)`);
+        new Chart(ctx, {
+            type: 'pie',
+            data: { labels: chartData.labels, datasets: [{ label: 'Брой книги', data: chartData.data, backgroundColor: backgroundColors, borderColor: '#ffffff', borderWidth: 1 }] },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { let label = context.label || ''; let value = context.parsed || 0; let total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0); let percentage = ((value / total) * 100).toFixed(1) + '%'; return `${label}: ${value} (${percentage})`; } } } }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

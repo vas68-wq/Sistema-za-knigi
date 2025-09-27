@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Дневник на дейността{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>{{ title }}</h2>
+        <div>
+            <a href="{{ url_for('reports.export_report_activity', year=request.args.get('year'), start_date=request.args.get('start_date'), end_date=request.args.get('end_date'), filter_type=request.args.get('filter_type')) }}" class="btn btn-success">
+                <i class="fas fa-file-excel"></i> Експорт на детайлния лог
+            </a>
+            <a href="{{ url_for('reports.reports_page') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Обратно към справките
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Филтриране по период</h5>
+            <form method="get" id="report-filter-form" class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label for="filter_type" class="form-label">Тип на филтъра</label>
+                    <select id="filter_type" name="filter_type" class="form-select">
+                        <option value="year" {% if request.args.get('filter_type', 'year') == 'year' %}selected{% endif %}>По година</option>
+                        <option value="period" {% if request.args.get('filter_type') == 'period' %}selected{% endif %}>По период</option>
+                    </select>
+                </div>
+                <div class="col-md-3" id="year-filter">
+                    <label for="year" class="form-label">Година</label>
+                    <input type="number" id="year" name="year" class="form-control" value="{{ request.args.get('year', current_year) }}">
+                </div>
+                <div class="col-md-2" id="start-date-filter" style="display: none;">
+                    <label for="start_date" class="form-label">Начална дата</label>
+                    <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.args.get('start_date', '') }}">
+                </div>
+                <div class="col-md-2" id="end-date-filter" style="display: none;">
+                    <label for="end_date" class="form-label">Крайна дата</label>
+                    <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.args.get('end_date', '') }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Филтрирай</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Активност по потребители</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for item in actions_by_user %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.username }}
+                            <span class="badge bg-primary rounded-pill">{{ item.action_count }}</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">Няма данни за избрания период.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Активност по тип на действието</strong>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for item in actions_by_type %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ item.action }}
+                            <span class="badge bg-info rounded-pill">{{ item.action_count }}</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">Няма данни за избрания период.</li>
+                    {% endfor %}
+                </ul>
+                 <div class="card-footer">
+                    <strong>Общо действия: {{ total_actions }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <h3 class="mt-5">Детайлен лог</h3>
+    {% if logs %}
+    <table id="activityTable" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Дата и час</th>
+                <th>Потребител</th>
+                <th>Действие</th>
+                <th>Детайли</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.timestamp | format_date_dmy }}</td>
+                <td>{{ log.username }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.details }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Няма намерени записи в дневника на дейността за избрания период.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#activityTable').DataTable({
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/bg.json"
+        }
+    });
+
+    // JavaScript за превключване на филтрите
+    const filterType = document.getElementById('filter_type');
+    const yearFilter = document.getElementById('year-filter');
+    const startDateFilter = document.getElementById('start-date-filter');
+    const endDateFilter = document.getElementById('end-date-filter');
+
+    function toggleFilters() {
+        if (filterType.value === 'year') {
+            yearFilter.style.display = 'block';
+            startDateFilter.style.display = 'none';
+            endDateFilter.style.display = 'none';
+        } else {
+            yearFilter.style.display = 'none';
+            startDateFilter.style.display = 'block';
+            endDateFilter.style.display = 'block';
+        }
+    }
+
+    toggleFilters(); // Извикваме функцията при зареждане на страницата
+    filterType.addEventListener('change', toggleFilters);
+});
+</script>
+{% endblock %}

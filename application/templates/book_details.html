@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Детайли за: {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    {% if back_url %}
+        <a href="{{ back_url }}" class="text-secondary d-block mb-3"><i class="fas fa-arrow-left"></i> Обратно</a>
+    {% elif is_admin_view %}
+        <a href="{{ url_for('books.books_list_page') }}" class="text-secondary d-block mb-3"><i class="fas fa-arrow-left"></i> Обратно към списъка</a>
+    {% else %}
+        <a href="{{ url_for('public.public_catalog_page') }}" class="text-secondary d-block mb-3"><i class="fas fa-arrow-left"></i> Обратно към каталога</a>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-4">
+            {% if book.cover_image %}
+                <img src="{{ url_for('books.serve_cover', filename=book.cover_image) }}" class="img-fluid rounded shadow" alt="Корица на {{ book.title }}">
+            {% else %}
+                <img src="{{ url_for('static', filename='placeholder.png') }}" class="img-fluid rounded shadow" alt="Няма корица">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h2>{{ book.title }}</h2>
+            <h4 class="text-muted">{{ book.author }}</h4>
+            <hr>
+            <p><strong>Инв. №:</strong> {{ book.tom_no }}</p>
+            <p><strong>ISBN:</strong> {{ book.isbn or 'Няма данни' }}</p>
+            <p><strong>Жанр:</strong> {{ book.genre or 'Няма данни' }}</p>
+            <p><strong>Година на издаване:</strong> {{ book.publish_year or 'Няма данни' }}</p>
+            <p><strong>Цена:</strong> {{ '%.2f лв.'|format(book.price) if book.price is not none else 'Няма данни' }}</p>
+            <p><strong>Дата на записване:</strong> {{ book.record_date | format_date_dmy }}</p>
+            <p><strong>Наличност:</strong> 
+                {% if book.is_borrowed %}
+                    <span class="badge bg-warning text-dark">Заета</span>
+                {% else %}
+                    <span class="badge bg-success">Налична</span>
+                {% endif %}
+            </p>
+            <p>
+                {% if book.is_donation %}
+                    <span class="badge bg-info">Дарение</span>
+                {% endif %}
+            </p>
+
+            {% if is_admin_view %}
+            <div class="mt-4">
+                <button class="btn btn-primary edit-book-btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editBookModal" 
+                        data-book-id="{{ book.tom_no }}">
+                    <i class="fas fa-edit"></i> Редактирай
+                </button>
+
+                <form action="{{ url_for('books.delete_book', tom_no=book.tom_no) }}" method="POST" class="d-inline" onsubmit="return confirm('Сигурни ли сте, че искате да изтриете тази книга?');">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Изтрий
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if borrow_history %}
+    <div class="row mt-5">
+        <div class="col">
+            <h3>История на заеманията</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Читателски №</th>
+                        <th>Читател</th>
+                        <th>Дата на заемане</th>
+                        <th>Върната на</th>
+                        <th>Състояние</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for borrow in borrow_history %}
+                    <tr>
+                        <td>{{ borrow.reader_no }}</td>
+                        <td><a href="{{ url_for('readers.reader_details_page', reader_no=borrow.reader_no) }}">{{ borrow.full_name }}</a></td>
+                        <td>{{ borrow.borrow_date | format_date_dmy }}</td>
+                        <td>{{ (borrow.return_date | format_date_dmy) if borrow.return_date else '-' }}</td>
+                        <td>
+                            {% if borrow.is_returned %}
+                                <span class="badge bg-secondary">Върната</span>
+                            {% else %}
+                                <span class="badge bg-primary">Заета</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% if is_admin_view %}
+    {% include 'edit_book_modal.html' %} 
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    {% if is_admin_view %}
+        <script src="{{ url_for('static', filename='books_list_logic.js') }}"></script>
+    {% endif %}
+{% endblock %}

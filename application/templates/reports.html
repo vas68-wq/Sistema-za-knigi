@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Справки{% endblock %}
+
+{% block content %}
+<div class="d-flex align-items-center mb-3">
+    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Към таблото
+    </a>
+    <h1 class="mb-0 mx-auto"><i class="bi bi-clipboard-data-fill"></i> Справки и отчети</h1>
+    <div style="width: 130px;"></div> 
+</div>
+
+<p class="lead text-center">Изберете справка, която искате да генерирате. По подразбиране справките се генерират за текущата година.</p>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Филтриране по период</h5>
+        <form method="get" id="report-filter-form" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label for="filter_type" class="form-label">Тип на филтъра</label>
+                <select id="filter_type" name="filter_type" class="form-select">
+                    <option value="year" selected>По година</option>
+                    <option value="period">По период</option>
+                </select>
+            </div>
+            <div class="col-md-3" id="year-filter">
+                <label for="year" class="form-label">Година</label>
+                <input type="number" id="year" name="year" class="form-control" value="{{ request.args.get('year', current_year) }}">
+            </div>
+            <div class="col-md-3" id="start-date-filter" style="display: none;">
+                <label for="start_date" class="form-label">Начална дата</label>
+                <input type="date" id="start_date" name="start_date" class="form-control" value="{{ request.args.get('start_date', '') }}">
+            </div>
+            <div class="col-md-3" id="end-date-filter" style="display: none;">
+                <label for="end_date" class="form-label">Крайна дата</label>
+                <input type="date" id="end_date" name="end_date" class="form-control" value="{{ request.args.get('end_date', '') }}">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Справки за книги</h5>
+                <p class="card-text">Отчети, свързани с движението и популярността на книгите в библиотеката.</p>
+                 <button type="submit" form="report-filter-form" formaction="{{ url_for('reports.report_new_books') }}" class="btn btn-primary">Нови книги</button>
+                 <button type="submit" form="report-filter-form" formaction="{{ url_for('reports.report_popular_books') }}" class="btn btn-primary">Най-популярни книги</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Справки за читатели</h5>
+                <p class="card-text">Отчети за активността и демографските данни на регистрираните читатели.</p>
+                <button type="submit" form="report-filter-form" formaction="{{ url_for('reports.report_active_readers') }}" class="btn btn-success">Най-активни читатели</button>
+                <button type="submit" form="report-filter-form" formaction="{{ url_for('reports.report_under_14') }}" class="btn btn-success">Читатели до 14 г.</button>
+                <button type="submit" form="report-filter-form" formaction="{{ url_for('reports.report_reader_stats') }}" class="btn btn-success">Демографска справка</button>
+            </div>
+        </div>
+    </div>
+    {% if session.get('role') == 'admin' %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Административни</h5>
+                <p class="card-text">Справки, достъпни само за администраторския персонал.</p>
+                <a href="{{ url_for('reports.activity_report_page') }}" class="btn btn-secondary">Дневник на дейността</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterType = document.getElementById('filter_type');
+    const yearFilter = document.getElementById('year-filter');
+    const startDateFilter = document.getElementById('start-date-filter');
+    const endDateFilter = document.getElementById('end-date-filter');
+
+    function toggleFilters() {
+        if (filterType.value === 'year') {
+            yearFilter.style.display = 'block';
+            startDateFilter.style.display = 'none';
+            endDateFilter.style.display = 'none';
+        } else {
+            yearFilter.style.display = 'none';
+            startDateFilter.style.display = 'block';
+            endDateFilter.style.display = 'block';
+        }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('filter_type') === 'period') {
+        filterType.value = 'period';
+    }
+
+    toggleFilters();
+    filterType.addEventListener('change', toggleFilters);
+});
+</script>
+{% endblock %}

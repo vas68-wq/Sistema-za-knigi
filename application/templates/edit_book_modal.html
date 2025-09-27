@@ -1,0 +1,72 @@
+<div class="modal fade" id="editBookModal" tabindex="-1" aria-labelledby="editBookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBookModalLabel">Редактиране на книга</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editBookForm" method="POST" action="" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_inv_number" class="form-label">Инв. №</label>
+                                <input type="text" class="form-control" id="edit_inv_number" name="inv_number" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_title" class="form-label">Заглавие</label>
+                                <input type="text" class="form-control" id="edit_title" name="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_author" class="form-label">Автор</label>
+                                <input type="text" class="form-control" id="edit_author" name="author" required>
+                            </div>
+                             <div class="mb-3">
+                                <label for="edit_isbn" class="form-label">ISBN</label>
+                                <input type="text" class="form-control" id="edit_isbn" name="isbn">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_genre" class="form-label">Жанр</label>
+                                <input class="form-control" list="genreDatalist_edit" id="edit_genre" name="genre" placeholder="Търси или въведи нов...">
+                                <datalist id="genreDatalist_edit">
+                                    </datalist>
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_publish_year" class="form-label">Год. на издаване</label>
+                                <input type="number" class="form-control" id="edit_publish_year" name="publish_year">
+                            </div>
+                            <div class="mb-3">
+                                <label for="edit_price" class="form-label">Цена</label>
+                                <input type="text" class="form-control" id="edit_price" name="price">
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="edit_is_donation" name="is_donation">
+                                <label class="form-check-label" for="edit_is_donation">
+                                    Дарение
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="edit_cover_image" class="form-label">Корица</label>
+                                <input class="form-control" type="file" id="edit_cover_image" name="cover_image">
+                                <input type="hidden" id="current_cover" name="current_cover">
+                                <div id="coverPreviewContainer_edit" class="mt-2">
+                                    <img id="coverPreview_edit" src="" alt="Текуща корица" class="img-fluid" style="max-height: 150px; display: none;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отказ</button>
+                        <button type="submit" class="btn btn-primary">Запази промените</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

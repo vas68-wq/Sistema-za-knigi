@@ -1,0 +1,127 @@
+/* General Body Styles */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+main {
+    flex-grow: 1;
+}
+
+/* --- Public Catalog Styles --- */
+.public-header {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 4rem 2rem;
+    border-radius: 0.5rem;
+    color: white;
+}
+
+.public-header h1, .public-header p {
+    font-family: 'Oswald', sans-serif;
+}
+
+.book-card-public {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.book-card-public:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.book-card-public .card-img-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.book-card-public .card-img-top {
+    height: 350px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.book-card-public:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.book-card-public .card-img-overlay {
+    background: rgba(0,0,0,0.7);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.book-card-public:hover .card-img-overlay {
+    opacity: 1;
+}
+
+.book-card-public .card-body {
+    background-color: #fff;
+    z-index: 10;
+}
+
+/* Tablet Status Indicator */
+.status-dot {
+    height: 12px;
+    width: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 8px;
+    border: 1px solid #fff;
+    vertical-align: middle;
+}
+
+.dot-red {
+    background-color: #dc3545; /* Bootstrap 'danger' red */
+}
+
+.dot-green {
+    background-color: #198754; /* Bootstrap 'success' green */
+}
+
+/* --- СТИЛОВЕ ЗА МОДАЛНИТЕ ПРОЗОРЦИ И ФОРМИ ЗА РЕДАКЦИЯ --- */
+
+/* Стил за етикетите (labels) */
+.modal-body .form-label,
+.edit-form .form-label {
+    /* ПРОМЯНА: Прилагаме новия шрифт */
+    font-family: 'Oswald', sans-serif;
+    font-weight: 500; 
+    text-align: center;
+    width: 100%;
+    margin-bottom: .2rem;
+    letter-spacing: 0.5px; /* Добавяме лека разредка за по-добра четимост */
+}
+
+/* Стил за полетата за въвеждане (inputs) */
+.modal-body .form-control,
+.modal-body .form-select,
+.edit-form .form-control,
+.edit-form .form-select {
+    border: 1px solid #adb5bd;
+    /* ПРОМЯНА: Центрираме текста в полето */
+    text-align: center;
+}
+
+/* Запазваме стила и при фокус, за да не изчезва рамката */
+.modal-body .form-control:focus,
+.modal-body .form-select:focus,
+.edit-form .form-control:focus,
+.edit-form .form-select:focus {
+    border: 1px solid #adb5bd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
